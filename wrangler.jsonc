@@ -8,5 +8,11 @@
     // /app/ abre app/index.html; endereço inexistente mostra o 404 padrão.
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "none"
-  }
+  },
+  // Domínios próprios: a cada publicação a Cloudflare liga estes endereços ao site
+  // (cria o registro de DNS e o certificado HTTPS sozinha).
+  "routes": [
+    { "pattern": "vozemcurso.com.br", "custom_domain": true },
+    { "pattern": "www.vozemcurso.com.br", "custom_domain": true }
+  ]
 }
