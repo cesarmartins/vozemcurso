@@ -45,10 +45,12 @@ create table public.exercicios (
   id            uuid primary key default gen_random_uuid(),
   dono_id       uuid not null references public.contas (id) on delete cascade,
   nome          text not null,
-  categoria     text not null check (categoria in ('aquecimento','vibracao','respiracao','aparelhos','pre-show','pos-show','outros')),
+  categoria     text not null check (categoria in ('aquecimento','vibracao','respiracao','diccao','aparelhos','pre-show','pos-show','outros')),
   equipamento   text not null default '',
   audio_path    text not null,
   arquivo_nome  text not null,
+  -- O professor (ou o aluno independente) mandou para a rotina de treino.
+  na_rotina     boolean not null default false,
   criado_em     timestamptz not null default now()
 );
 create index on public.exercicios (dono_id);
@@ -98,6 +100,24 @@ alter table public.aulas add constraint aulas_sem_conflito exclude using gist (
   professor_id with =,
   dia with =,
   tsrange(timestamp '2000-01-01' + inicio, timestamp '2000-01-01' + inicio + make_interval(mins => duracao)) with &&
+);
+
+-- ---------- Rotina de treino ----------
+-- Um registro por passo feito ou pulado em cada dia. passo: 'padrao:<id>' (exercício padrão
+-- Voz em Curso), 'prof:<uuid>' (exercício da biblioteca) ou 'extra:<id>' (fora da rotina).
+create table public.treinos (
+  aluno_id      uuid not null references public.contas (id) on delete cascade,
+  dia           date not null,
+  passo         text not null,
+  estado        text not null check (estado in ('feito', 'pulado')),
+  feito_em      timestamptz not null default now(),
+  primary key (aluno_id, dia, passo)
+);
+-- Dias com o treino completo (base da sequência de dias seguidos).
+create table public.treinos_concluidos (
+  aluno_id      uuid not null references public.contas (id) on delete cascade,
+  dia           date not null,
+  primary key (aluno_id, dia)
 );
 
 -- ---------- Funções auxiliares (rodam como dono do banco, sem recursão nas políticas) ----------
@@ -185,6 +205,14 @@ create policy aulas_professor on public.aulas for all using (professor_id = auth
 create policy aulas_aluno on public.aulas for select using (
   professor_id = public.meu_professor() and aluno_email = (select email from public.contas where id = auth.uid())
 );
+
+-- Treino: o aluno grava e lê o dele; o professor acompanha a turma.
+alter table public.treinos enable row level security;
+alter table public.treinos_concluidos enable row level security;
+create policy treinos_aluno on public.treinos for all using (aluno_id = auth.uid()) with check (aluno_id = auth.uid());
+create policy treinos_professor on public.treinos for select using (public.sou_professor_de(aluno_id));
+create policy concluidos_aluno on public.treinos_concluidos for all using (aluno_id = auth.uid()) with check (aluno_id = auth.uid());
+create policy concluidos_professor on public.treinos_concluidos for select using (public.sou_professor_de(aluno_id));
 
 -- ---------- Storage (áudios) ----------
 -- Crie o bucket privado "exercicios" no painel do Supabase e depois rode:

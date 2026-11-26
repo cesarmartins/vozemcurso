@@ -8,6 +8,8 @@ import { cifra, nomeNota } from './musica/notas';
 import { GraficoExercicio } from './ui/graficoExercicio';
 import { iniciarBiblioteca } from './ui/biblioteca';
 import { iniciarPortal } from './ui/portal';
+import { iniciarTreino } from './ui/treino';
+import type { ExercicioParaPraticar } from './ui/biblioteca';
 import { desenharVolume, GraficoMelodia, Tela } from './ui/graficos';
 import { el, mostrarExtensao, PainelAfinador, PainelVolume } from './ui/paineis';
 import { lerCores } from './ui/tema';
@@ -290,26 +292,35 @@ el<HTMLInputElement>('exLag').addEventListener('input', (e) => {
 });
 
 // Biblioteca e portal
+/** Abre um exercício no afinador (da biblioteca ou do treino). */
+async function praticar({ id, nome, obterAudio }: ExercicioParaPraticar, doTreino = false) {
+  el('voltarTreino').hidden = !doTreino;
+  portal.irPara('afinador');
+  requestAnimationFrame(() => cartao.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  status.textContent = 'Abrindo o exercício…';
+  let blob: Blob;
+  try {
+    blob = await obterAudio();
+  } catch (e) {
+    erro.textContent = e instanceof Error ? e.message : 'Não consegui abrir esse exercício.';
+    erro.hidden = false;
+    status.textContent = textoInicial.status;
+    return;
+  }
+  await carregar(blob, nome, id);
+}
+
+const treino = iniciarTreino({ conta: () => portal.conta(), praticar: (ex) => void praticar(ex, true), a4: () => ajustes.a4 });
 const biblioteca = iniciarBiblioteca({
-  aoPraticar: async ({ id, nome, obterAudio }) => {
-    portal.irPara('afinador');
-    requestAnimationFrame(() => cartao.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-    status.textContent = 'Abrindo o exercício…';
-    let blob: Blob;
-    try {
-      blob = await obterAudio();
-    } catch (e) {
-      erro.textContent = e instanceof Error ? e.message : 'Não consegui abrir esse exercício.';
-      erro.hidden = false;
-      status.textContent = textoInicial.status;
-      return;
-    }
-    await carregar(blob, nome, id);
-  },
+  aoPraticar: (ex) => void praticar(ex),
   irParaBiblioteca: () => portal.irPara('biblioteca'),
+  aoMudarRotina: () => treino.atualizar(),
 });
 const portal = iniciarPortal({
-  aoMudarContexto: (contexto) => biblioteca.definirContexto(contexto),
+  aoMudarContexto: (contexto) => {
+    biblioteca.definirContexto(contexto);
+    treino.definirContexto(contexto);
+  },
   aoSairDoAfinador: () => {
     fecharExercicio();
     if (mic.ligado) desligar();

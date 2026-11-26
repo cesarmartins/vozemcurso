@@ -14,6 +14,8 @@ export interface ExercicioPessoal {
   arquivoNome: string;
   audio: Blob;
   criadoEm: number;
+  /** O professor (ou o aluno independente) mandou este exercício para a rotina de treino. */
+  naRotina?: boolean;
 }
 
 function abrirBanco(): Promise<IDBDatabase> {

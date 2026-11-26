@@ -11,6 +11,8 @@ interface ExercicioVisivel {
   arquivoNome: string;
   pessoal: boolean;
   obterAudio: () => Promise<Blob>;
+  /** O registro guardado, para poder alterar (ex.: mandar para a rotina). */
+  original?: ExercicioPessoal;
 }
 
 export interface ExercicioParaPraticar {
@@ -119,6 +121,8 @@ export interface OpcoesBiblioteca {
   aoPraticar: (ex: ExercicioParaPraticar) => void;
   /** Leva o usuário para a tela da biblioteca (usado pelo cartão do painel). */
   irParaBiblioteca: () => void;
+  /** Um exercício entrou ou saiu da rotina de treino. */
+  aoMudarRotina?: () => void;
 }
 
 export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca {
@@ -214,6 +218,7 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
             arquivoNome: item.arquivoNome,
             pessoal: true,
             obterAudio: () => Promise.resolve(item.audio),
+            original: item,
           };
         }),
     ];
@@ -393,7 +398,27 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
       tocandoAgora?.pause();
       opcoes.aoPraticar({ id: item.id, nome: item.nome, obterAudio: item.obterAudio });
     });
-    cartao.append(praticar, criar('p', 'file', item.arquivoNome));
+    cartao.append(praticar);
+    if (item.original && podeEditar()) {
+      const original = item.original;
+      const naRotina = !!original.naRotina;
+      const rotina = criar('button', 'btn secondary sm rotina-btn', naRotina ? '✓ Na rotina de treino' : 'Mandar para a rotina');
+      rotina.type = 'button';
+      rotina.setAttribute('aria-pressed', String(naRotina));
+      rotina.title = naRotina ? 'Toque para tirar da rotina' : 'Entra no bloco "Exercícios do professor" do Treino';
+      rotina.addEventListener('click', async () => {
+        try {
+          await salvarExercicio({ ...original, naRotina: !naRotina });
+          avisar(naRotina ? `“${item.nome}” saiu da rotina de treino.` : `“${item.nome}” entrou na rotina de treino.`, 'ok');
+          await carregar();
+          opcoes.aoMudarRotina?.();
+        } catch {
+          avisar('Não foi possível alterar a rotina.', 'erro');
+        }
+      });
+      cartao.append(rotina);
+    }
+    cartao.append(criar('p', 'file', item.arquivoNome));
     return cartao;
   }
 

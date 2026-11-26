@@ -6,7 +6,7 @@ import type { ContextoBiblioteca } from './biblioteca';
 
 // Entrada (login e cadastro), turma do professor e perfil do aluno.
 
-export type Tela = 'painel' | 'agenda' | 'perfil' | 'biblioteca' | 'afinador';
+export type Tela = 'painel' | 'agenda' | 'treino' | 'perfil' | 'biblioteca' | 'afinador';
 
 export interface OpcoesPortal {
   /** Chamado ao entrar e sempre que muda o que a biblioteca deve mostrar. */
@@ -21,7 +21,7 @@ export interface ControlePortal {
   conta(): Conta | null;
 }
 
-const TELAS: Tela[] = ['painel', 'agenda', 'perfil', 'biblioteca', 'afinador'];
+const TELAS: Tela[] = ['painel', 'agenda', 'treino', 'perfil', 'biblioteca', 'afinador'];
 
 const iniciais = (texto: string) =>
   texto
@@ -212,7 +212,7 @@ export function iniciarPortal(opcoes: OpcoesPortal): ControlePortal {
       irPara('painel');
     } else {
       void carregarPerfil();
-      irPara('perfil');
+      irPara('treino');
     }
   }
 

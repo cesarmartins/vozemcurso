@@ -3,6 +3,7 @@ export const CATEGORIAS = [
   { id: 'aquecimento', nome: 'Aquecimento vocal', descricao: 'Preparação suave da voz.' },
   { id: 'vibracao', nome: 'Exercícios de vibração', descricao: 'Lábios, língua e trato vocal semiocluído.' },
   { id: 'respiracao', nome: 'Controle respiratório', descricao: 'Fluxo de ar, apoio e coordenação.' },
+  { id: 'diccao', nome: 'Dicção e articulação', descricao: 'Clareza das palavras ao falar e cantar.' },
   { id: 'aparelhos', nome: 'Exercícios com aparelhos', descricao: 'Práticas com Respirom, Lax Vox e outros.' },
   { id: 'pre-show', nome: 'Pré-show', descricao: 'Rotinas para antes de cantar no palco.' },
   { id: 'pos-show', nome: 'Pós-show', descricao: 'Desaquecimento e recuperação vocal.' },
