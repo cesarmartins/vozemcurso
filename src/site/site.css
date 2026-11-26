@@ -126,3 +126,19 @@ html:has(.site) { height: auto; scroll-behavior: smooth; scroll-padding-top: 72p
 }
 .site-header .brand-name { font-size: 18px; }
 .site-header img.brand-mark { width: 34px; height: 34px; }
+
+/* Planos: preço por aluno */
+.price b { font-variant-numeric: tabular-nums; }
+.price-note { font-size: 14px; color: var(--muted); margin-top: -6px; }
+.price-note b { color: var(--fg); font-weight: 600; }
+.calc { display: grid; gap: 8px; padding: 14px 16px; border-radius: 12px; background: var(--accent-soft); }
+.calc label { font-size: 13px; font-weight: 600; color: var(--fg-2); }
+.calc-row { display: flex; align-items: center; gap: 12px; }
+.calc input[type="range"] { flex: 1; accent-color: var(--accent); min-width: 0; }
+.calc output { min-width: 2.5ch; text-align: right; font: 700 18px var(--f-mono); color: var(--accent); }
+.calc p { font-size: 13px; color: var(--muted); }
+.calc p b { font: 800 20px var(--f-display); color: var(--fg); letter-spacing: -.02em; }
+/* No celular, o plano do professor (público principal) vem primeiro. */
+@media (max-width: 960px) { .plan.featured { order: -1; } }
+.plan .check-list { align-content: start; }
+.section-lead b { color: var(--fg); font-weight: 700; }

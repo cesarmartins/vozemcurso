@@ -21,3 +21,19 @@ if (botao && menu) {
 
 const ano = document.getElementById('ano');
 if (ano) ano.textContent = String(new Date().getFullYear());
+
+// Calculadora do plano do professor: R$ 9,90 por aluno ativo.
+const PRECO_POR_ALUNO = 9.9;
+const faixa = document.getElementById('calcAlunos') as HTMLInputElement | null;
+const qtd = document.getElementById('calcQtd');
+const total = document.getElementById('calcTotal');
+if (faixa && qtd && total) {
+  const reais = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const atualizar = () => {
+    const n = Number(faixa.value);
+    qtd.textContent = String(n);
+    total.innerHTML = `<b>${reais(n * PRECO_POR_ALUNO)}</b> por mês · ${n === 1 ? '1 aluno' : `${n} alunos`}`;
+  };
+  faixa.addEventListener('input', atualizar);
+  atualizar();
+}

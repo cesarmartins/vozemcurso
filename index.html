@@ -64,6 +64,7 @@
         <ul class="hero-points">
           <li><svg><use href="#i-check"/></svg>Funciona no navegador, no computador e no celular</li>
           <li><svg><use href="#i-check"/></svg>Nada para instalar</li>
+          <li><svg><use href="#i-check"/></svg>7 dias grátis</li>
         </ul>
       </div>
       <figure class="hero-demo" aria-label="Exemplo do gráfico: notas do piano em barras e a voz do aluno em linha colorida">
@@ -147,44 +148,56 @@
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">Planos</p>
-        <h2>Escolha como você vai usar</h2>
-        <p class="section-lead">Alunos que entram pela turma de um professor não pagam nada: estão incluídos no plano do professor.</p>
+        <h2>Menos de R$ 10 por aluno</h2>
+        <p class="section-lead">Todos os planos começam com <b>7 dias grátis</b>. Depois, o professor paga só pelos alunos ativos, e quem estuda sem professor assina o próprio plano.</p>
       </div>
       <div class="plans">
         <article class="plan">
           <h3>Aluno</h3>
           <p class="plan-for">Para quem estuda sem professor</p>
-          <p class="price"><span>R$</span><b>19</b><small>/mês</small></p>
+          <p class="price"><span>R$</span><b>9,90</b><small>/mês</small></p>
+          <p class="price-note">ou <b>R$ 99 por ano</b>: 2 meses grátis</p>
           <ul class="check-list">
             <li><svg><use href="#i-check"/></svg>Afinador e medidor de volume</li>
-            <li><svg><use href="#i-check"/></svg>Seus próprios exercícios</li>
+            <li><svg><use href="#i-check"/></svg>Seus próprios exercícios com gráfico</li>
             <li><svg><use href="#i-check"/></svg>Histórico de práticas</li>
+            <li><svg><use href="#i-check"/></svg>7 dias grátis para experimentar</li>
           </ul>
           <a class="btn secondary" href="/app/#criar-aluno">Começar</a>
         </article>
         <article class="plan featured">
-          <span class="badge">Mais escolhido</span>
+          <span class="badge">Para professores</span>
           <h3>Professor</h3>
-          <p class="plan-for">Para quem dá aulas particulares</p>
-          <p class="price"><span>R$</span><b>59</b><small>/mês</small></p>
+          <p class="plan-for">Conta grátis. Você paga por aluno ativo.</p>
+          <p class="price"><span>R$</span><b>9,90</b><small>/aluno por mês</small></p>
+          <div class="calc" id="calc">
+            <label for="calcAlunos">Quantos alunos você tem?</label>
+            <div class="calc-row">
+              <input id="calcAlunos" type="range" min="1" max="40" value="10" aria-describedby="calcTotal">
+              <output id="calcQtd" for="calcAlunos">10</output>
+            </div>
+            <p id="calcTotal" aria-live="polite"><b>R$ 99,00</b> por mês · R$ 9,90 por aluno</p>
+          </div>
           <ul class="check-list">
-            <li><svg><use href="#i-check"/></svg>Até 30 alunos incluídos</li>
-            <li><svg><use href="#i-check"/></svg>Biblioteca de exercícios da turma</li>
-            <li><svg><use href="#i-check"/></svg>Resultados de cada aluno</li>
-            <li><svg><use href="#i-check"/></svg>Treinos com aparelhos</li>
+            <li><svg><use href="#i-check"/></svg>7 dias grátis com a turma inteira</li>
+            <li><svg><use href="#i-check"/></svg>Sem mensalidade fixa: criar a conta é grátis</li>
+            <li><svg><use href="#i-check"/></svg>Só contam alunos ativos; convites pendentes não</li>
+            <li><svg><use href="#i-check"/></svg>Uma cobrança por mês, somando a turma</li>
+            <li><svg><use href="#i-check"/></svg>Biblioteca, agenda, resultados e treinos com aparelhos</li>
           </ul>
-          <a class="btn primary" href="/app/#criar-professor">Começar</a>
+          <a class="btn primary" href="/app/#criar-professor">Criar conta grátis</a>
         </article>
         <article class="plan">
           <h3>Escola</h3>
           <p class="plan-for">Para estúdios e escolas de música</p>
           <p class="price"><b class="price-text">Sob consulta</b></p>
           <ul class="check-list">
-            <li><svg><use href="#i-check"/></svg>Vários professores</li>
-            <li><svg><use href="#i-check"/></svg>Alunos sem limite fixo</li>
+            <li><svg><use href="#i-check"/></svg>7 dias grátis para testar com a equipe</li>
+            <li><svg><use href="#i-check"/></svg>Vários professores na mesma conta</li>
+            <li><svg><use href="#i-check"/></svg>Desconto por volume de alunos</li>
             <li><svg><use href="#i-check"/></svg>Ajuda para montar a biblioteca</li>
           </ul>
-          <a class="btn secondary" href="#duvidas">Fale conosco</a>
+          <a class="btn secondary" href="mailto:contato@vozemcurso.com.br?subject=Plano%20Escola%20-%20Voz%20em%20Curso">Fale conosco</a>
         </article>
       </div>
     </div>
@@ -200,9 +213,11 @@
         <details><summary>Preciso instalar algum programa?</summary><p>Não. O Voz em Curso funciona no navegador. Recomendamos o Chrome, no computador ou no celular.</p></details>
         <details><summary>Que tipo de áudio funciona melhor?</summary><p>Piano tocando uma nota por vez, como nos vocalises. Acordes de acompanhamento também funcionam: o sistema ignora o baixo e segue a melodia.</p></details>
         <details><summary>Preciso de fone de ouvido?</summary><p>Sim, para praticar com o exercício. Sem fone, o microfone escuta o piano junto com a voz e o gráfico fica confuso.</p></details>
-        <details><summary>Meus alunos precisam pagar?</summary><p>Não. Quem entra pela sua turma está incluído no plano de professor. Só quem estuda sem professor assina o plano de aluno.</p></details>
+        <details><summary>Meus alunos precisam pagar?</summary><p>Não. Quem entra pela sua turma não paga nada ao Voz em Curso: você paga R$ 9,90 por aluno ativo e pode incluir esse valor na mensalidade das aulas.</p></details>
+        <details><summary>Como funcionam os 7 dias grátis?</summary><p>Todo plano começa com 7 dias para usar tudo, sem pagar. O professor pode convidar a turma inteira nesse período. Se não quiser continuar, é só não assinar: nada é cobrado.</p></details>
+        <details><summary>O que conta como aluno ativo?</summary><p>Quem já criou a conta e está na sua turma. Convites que ainda não viraram conta não entram na cobrança, e quem sai da turma deixa de contar no mês seguinte.</p></details>
         <details><summary>Outros professores veem meus alunos ou meus exercícios?</summary><p>Não. Cada professor vê só a própria turma e a própria biblioteca. O aluno vê apenas os exercícios do professor dele.</p></details>
-        <details><summary>Posso começar sozinho e depois entrar na turma de um professor?</summary><p>Pode. No seu perfil, digite o código da turma que o professor passar.</p></details>
+        <details><summary>Posso começar sozinho e depois entrar na turma de um professor?</summary><p>Pode. No seu perfil, digite o código da turma que o professor passar. A partir daí, quem paga é o professor.</p></details>
       </div>
     </div>
   </section>
@@ -221,7 +236,7 @@
 <footer class="site-footer">
   <div class="wrap footer-row">
     <a class="brand" href="/"><img class="brand-mark" src="/favicon.svg" alt="" width="32" height="32"><span class="brand-name">voz <em>em curso</em></span></a>
-    <nav aria-label="Rodapé"><a href="#recursos">Recursos</a><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="/app/#entrar">Entrar</a></nav>
+    <nav aria-label="Rodapé"><a href="#recursos">Recursos</a><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="mailto:contato@vozemcurso.com.br">contato@vozemcurso.com.br</a><a href="/app/#entrar">Entrar</a></nav>
     <p>© <span id="ano">2026</span> Voz em Curso · vozemcurso.com.br</p>
   </div>
 </footer>
