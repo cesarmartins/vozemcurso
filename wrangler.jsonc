@@ -1,0 +1,12 @@
+// Publicação na Cloudflare (Workers com arquivos estáticos).
+// O build (npm run build) gera a pasta dist; o "npx wrangler deploy" envia essa pasta.
+{
+  "name": "vozemcurso",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    // /app/ abre app/index.html; endereço inexistente mostra o 404 padrão.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}
