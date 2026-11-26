@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-labelledby="title desc">
+  <title id="title">Voz em Curso</title>
+  <desc id="desc">Símbolo de uma curva vocal que sobe e termina em uma nota dourada.</desc>
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#17454b"/>
+      <stop offset="1" stop-color="#102b33"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="76" height="76" rx="24" fill="url(#fundo)"/>
+  <path d="M17 50h7c7 0 9-18 16-18s8 18 15 18h5" fill="none" stroke="#83d9ce" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17 60h21" fill="none" stroke="#fff" stroke-opacity=".76" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="63" cy="29" r="5.5" fill="#f4b568"/>
+  <path d="M59 39c1.2-4.5 4.1-7.2 8.5-8" fill="none" stroke="#f4b568" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

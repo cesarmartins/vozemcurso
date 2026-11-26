@@ -1,0 +1,16 @@
+# Dependências e build
+node_modules
+dist
+
+# Segredos e configurações locais (nunca enviar)
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+
+# Sistema e editores
+.DS_Store
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea

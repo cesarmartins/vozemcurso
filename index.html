@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Voz em Curso · Prática de canto com gráfico de afinação</title>
+<meta name="description" content="O professor de canto envia o exercício gravado no piano. O aluno pratica em casa e vê, nota por nota, onde afinou e onde desafinou.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#0E161D">
+<link rel="canonical" href="https://vozemcurso.com.br/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Voz em Curso">
+<meta property="og:title" content="Voz em Curso · Seus alunos praticam em casa. Você vê se eles afinaram.">
+<meta property="og:description" content="O professor de canto envia o exercício gravado no piano. O aluno pratica em casa e vê, nota por nota, onde afinou e onde desafinou.">
+<meta property="og:url" content="https://vozemcurso.com.br/">
+<meta property="og:locale" content="pt_BR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+</head>
+<body class="site">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-afinador" viewBox="0 0 24 24"><path d="M2 12h3l3-8 4 16 3-8h7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-grafico" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></symbol>
+    <symbol id="i-placar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-aparelho" viewBox="0 0 24 24"><path d="M14.5 2.5L11 14"/><path d="M5.5 11h13l-1.6 9.2a1 1 0 0 1-1 .8H8.1a1 1 0 0 1-1-.8z"/></symbol>
+    <symbol id="i-turma" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.8.8 3 2.6 3.5 5.2"/></symbol>
+    <symbol id="i-extensao" viewBox="0 0 24 24"><path d="M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="/"><img class="brand-mark" src="/favicon.svg" alt="" width="32" height="32"><span class="brand-name">voz <em>em curso</em></span></a>
+    <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Abrir menu"><svg><use href="#i-menu"/></svg></button>
+    <nav class="site-nav" id="siteNav" aria-label="Site">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#planos">Planos</a>
+      <a href="#duvidas">Dúvidas</a>
+      <span class="nav-actions">
+        <a class="btn ghost on-dark" href="/app/#entrar">Entrar</a>
+        <a class="btn primary" href="/app/#criar-conta">Criar conta</a>
+      </span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">Para professores de canto e seus alunos</p>
+        <h1>Seus alunos praticam em casa. Você vê se eles afinaram.</h1>
+        <p class="hero-lead">Envie o exercício que você já grava no piano. O aluno canta junto e vê, nota por nota, onde acertou e onde desafinou. Você acompanha o progresso de cada um.</p>
+        <div class="hero-ctas">
+          <a class="btn primary lg" href="/app/#criar-professor">Sou professor</a>
+          <a class="btn secondary lg on-dark" href="/app/#criar-aluno">Sou aluno</a>
+        </div>
+        <ul class="hero-points">
+          <li><svg><use href="#i-check"/></svg>Funciona no navegador, no computador e no celular</li>
+          <li><svg><use href="#i-check"/></svg>Nada para instalar</li>
+        </ul>
+      </div>
+      <figure class="hero-demo" aria-label="Exemplo do gráfico: notas do piano em barras e a voz do aluno em linha colorida">
+        <div class="demo-top"><span>Vocalise em Dó maior</span><span class="demo-score"><b>86%</b> das notas no tom</span></div>
+        <svg viewBox="0 0 420 180" role="img">
+          <g class="demo-grid"><line x1="0" y1="30" x2="420" y2="30"/><line x1="0" y1="60" x2="420" y2="60"/><line x1="0" y1="90" x2="420" y2="90"/><line x1="0" y1="120" x2="420" y2="120"/><line x1="0" y1="150" x2="420" y2="150"/></g>
+          <g class="demo-bars">
+            <rect x="14" y="140" width="40" height="18" rx="4"/><rect x="58" y="125" width="30" height="18" rx="4"/><rect x="92" y="140" width="40" height="18" rx="4"/><rect x="136" y="125" width="30" height="18" rx="4"/>
+            <rect x="170" y="110" width="40" height="18" rx="4"/><rect x="214" y="95" width="30" height="18" rx="4"/><rect x="248" y="80" width="96" height="18" rx="4"/><rect x="348" y="95" width="30" height="18" rx="4"/>
+          </g>
+          <path class="demo-voice ok" d="M18 150 C30 149 42 150 52 149 L62 135 C70 134 80 134 86 135 L96 150 C108 151 120 149 130 150 L140 135 C150 133 158 135 164 134"/>
+          <path class="demo-voice warn" d="M174 121 C186 117 198 118 208 119"/>
+          <path class="demo-voice ok" d="M218 104 C228 104 236 105 242 104 L252 90 C270 88 290 92 306 89 C320 87 332 91 342 89"/>
+          <circle class="demo-dot" cx="342" cy="89" r="5"/>
+          <line class="demo-cursor" x1="342" y1="10" x2="342" y2="172"/>
+        </svg>
+        <figcaption><span class="dot bar"></span>Piano <span class="dot ok"></span>Voz afinada <span class="dot warn"></span>Quase</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="como-funciona">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Como funciona</p>
+        <h2>Do seu piano para o estudo do aluno, em três passos</h2>
+      </div>
+      <ol class="steps">
+        <li><span class="step-n">1</span><h3>Grave e envie</h3><p>Grave o vocalise no piano, como você já faz para mandar no WhatsApp, e envie o áudio para a sua biblioteca.</p></li>
+        <li><span class="step-n">2</span><h3>O aluno pratica</h3><p>O aluno entra com o código da sua turma, escolhe o exercício e canta junto. O gráfico mostra o piano e a voz lado a lado.</p></li>
+        <li><span class="step-n">3</span><h3>Você acompanha</h3><p>Cada prática gera um placar de notas certas e o desvio em cents. Na aula, você já sabe onde trabalhar.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section alt" id="recursos">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Recursos</p>
+        <h2>Tudo o que a prática de canto precisa, num lugar só</h2>
+      </div>
+      <div class="features">
+        <article><span class="f-icon"><svg><use href="#i-grafico"/></svg></span><h3>Gráfico do exercício</h3><p>As notas do piano aparecem em barras e a voz em linha colorida: verde quando afina, amarela quando quase, vermelha quando sai do tom.</p></article>
+        <article><span class="f-icon"><svg><use href="#i-afinador"/></svg></span><h3>Afinador</h3><p>Mostra a nota cantada, a frequência e quantos cents acima ou abaixo, com nota de referência para tocar.</p></article>
+        <article><span class="f-icon"><svg><use href="#i-volume"/></svg></span><h3>Medidor de volume</h3><p>Acompanha a intensidade da voz em decibéis, com pico e média, para trabalhar dinâmica e apoio.</p></article>
+        <article><span class="f-icon"><svg><use href="#i-placar"/></svg></span><h3>Placar de cada prática</h3><p>Notas certas, desvio médio e histórico por exercício. O aluno vê a evolução e se motiva.</p></article>
+        <article><span class="f-icon"><svg><use href="#i-aparelho"/></svg></span><h3>Treinos com aparelhos</h3><p>Organize exercícios com Respirom, Lax Vox, Shaker ou canudo e veja o aproveitamento da turma em cada aparelho.</p></article>
+        <article><span class="f-icon"><svg><use href="#i-turma"/></svg></span><h3>Sua turma, só sua</h3><p>Cada professor tem a própria turma e a própria biblioteca. Os alunos entram com um código ou link de convite.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="para-quem">
+    <div class="wrap audience">
+      <article class="aud-card">
+        <p class="kicker">Para professores</p>
+        <h2>Mais resultado entre uma aula e outra</h2>
+        <ul class="check-list">
+          <li><svg><use href="#i-check"/></svg>Biblioteca com os seus próprios áudios, por categoria</li>
+          <li><svg><use href="#i-check"/></svg>Cadastro de alunos por e-mail ou código da turma</li>
+          <li><svg><use href="#i-check"/></svg>Aproveitamento de cada aluno em cada exercício</li>
+          <li><svg><use href="#i-check"/></svg>Um diferencial para cobrar melhor pelas suas aulas</li>
+        </ul>
+        <a class="btn primary" href="/app/#criar-professor">Criar conta de professor</a>
+      </article>
+      <article class="aud-card">
+        <p class="kicker">Para quem estuda sozinho</p>
+        <h2>Treine a afinação no seu ritmo</h2>
+        <ul class="check-list">
+          <li><svg><use href="#i-check"/></svg>Afinador e medidor de volume para o dia a dia</li>
+          <li><svg><use href="#i-check"/></svg>Envie áudios de vocalises e pratique com o gráfico</li>
+          <li><svg><use href="#i-check"/></svg>Histórico das suas práticas</li>
+          <li><svg><use href="#i-check"/></svg>Achou um professor? Entre na turma dele com o código</li>
+        </ul>
+        <a class="btn secondary" href="/app/#criar-aluno">Criar conta de aluno</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section alt" id="planos">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Planos</p>
+        <h2>Escolha como você vai usar</h2>
+        <p class="section-lead">Alunos que entram pela turma de um professor não pagam nada: estão incluídos no plano do professor.</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <h3>Aluno</h3>
+          <p class="plan-for">Para quem estuda sem professor</p>
+          <p class="price"><span>R$</span><b>19</b><small>/mês</small></p>
+          <ul class="check-list">
+            <li><svg><use href="#i-check"/></svg>Afinador e medidor de volume</li>
+            <li><svg><use href="#i-check"/></svg>Seus próprios exercícios</li>
+            <li><svg><use href="#i-check"/></svg>Histórico de práticas</li>
+          </ul>
+          <a class="btn secondary" href="/app/#criar-aluno">Começar</a>
+        </article>
+        <article class="plan featured">
+          <span class="badge">Mais escolhido</span>
+          <h3>Professor</h3>
+          <p class="plan-for">Para quem dá aulas particulares</p>
+          <p class="price"><span>R$</span><b>59</b><small>/mês</small></p>
+          <ul class="check-list">
+            <li><svg><use href="#i-check"/></svg>Até 30 alunos incluídos</li>
+            <li><svg><use href="#i-check"/></svg>Biblioteca de exercícios da turma</li>
+            <li><svg><use href="#i-check"/></svg>Resultados de cada aluno</li>
+            <li><svg><use href="#i-check"/></svg>Treinos com aparelhos</li>
+          </ul>
+          <a class="btn primary" href="/app/#criar-professor">Começar</a>
+        </article>
+        <article class="plan">
+          <h3>Escola</h3>
+          <p class="plan-for">Para estúdios e escolas de música</p>
+          <p class="price"><b class="price-text">Sob consulta</b></p>
+          <ul class="check-list">
+            <li><svg><use href="#i-check"/></svg>Vários professores</li>
+            <li><svg><use href="#i-check"/></svg>Alunos sem limite fixo</li>
+            <li><svg><use href="#i-check"/></svg>Ajuda para montar a biblioteca</li>
+          </ul>
+          <a class="btn secondary" href="#duvidas">Fale conosco</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="duvidas">
+    <div class="wrap narrow">
+      <div class="section-head">
+        <p class="kicker">Dúvidas</p>
+        <h2>Perguntas frequentes</h2>
+      </div>
+      <div class="faq">
+        <details><summary>Preciso instalar algum programa?</summary><p>Não. O Voz em Curso funciona no navegador. Recomendamos o Chrome, no computador ou no celular.</p></details>
+        <details><summary>Que tipo de áudio funciona melhor?</summary><p>Piano tocando uma nota por vez, como nos vocalises. Acordes de acompanhamento também funcionam: o sistema ignora o baixo e segue a melodia.</p></details>
+        <details><summary>Preciso de fone de ouvido?</summary><p>Sim, para praticar com o exercício. Sem fone, o microfone escuta o piano junto com a voz e o gráfico fica confuso.</p></details>
+        <details><summary>Meus alunos precisam pagar?</summary><p>Não. Quem entra pela sua turma está incluído no plano de professor. Só quem estuda sem professor assina o plano de aluno.</p></details>
+        <details><summary>Outros professores veem meus alunos ou meus exercícios?</summary><p>Não. Cada professor vê só a própria turma e a própria biblioteca. O aluno vê apenas os exercícios do professor dele.</p></details>
+        <details><summary>Posso começar sozinho e depois entrar na turma de um professor?</summary><p>Pode. No seu perfil, digite o código da turma que o professor passar.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="wrap cta-row">
+      <div><h2>Comece hoje com os áudios que você já tem</h2><p>Crie a conta, envie um vocalise e mande o link para um aluno testar.</p></div>
+      <div class="hero-ctas">
+        <a class="btn primary lg" href="/app/#criar-professor">Sou professor</a>
+        <a class="btn secondary lg on-dark" href="/app/#criar-aluno">Sou aluno</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <a class="brand" href="/"><img class="brand-mark" src="/favicon.svg" alt="" width="32" height="32"><span class="brand-name">voz <em>em curso</em></span></a>
+    <nav aria-label="Rodapé"><a href="#recursos">Recursos</a><a href="#planos">Planos</a><a href="#duvidas">Dúvidas</a><a href="/app/#entrar">Entrar</a></nav>
+    <p>© <span id="ano">2026</span> Voz em Curso · vozemcurso.com.br</p>
+  </div>
+</footer>
+
+<script type="module" src="/src/site/site.ts"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Voz em Curso · Entrar</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#0E161D">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-painel" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-biblioteca" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+    <symbol id="i-afinador" viewBox="0 0 24 24"><path d="M2 12h3l3-8 4 16 3-8h7"/></symbol>
+    <symbol id="i-perfil" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+    <symbol id="i-sair" viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></symbol>
+    <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-seta" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-fechar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-aparelho" viewBox="0 0 24 24"><path d="M14.5 2.5L11 14"/><path d="M5.5 11h13l-1.6 9.2a1 1 0 0 1-1 .8H8.1a1 1 0 0 1-1-.8z"/><circle cx="10" cy="17" r=".9"/><circle cx="13.5" cy="15.5" r=".9"/></symbol>
+    <symbol id="i-agenda" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M7.5 13.5h3M13.5 13.5h3M7.5 17h3"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+  </defs>
+</svg>
+
+<!-- Entrada -->
+<section class="login" id="loginPage">
+  <div class="login-brand">
+    <a class="brand" href="/" aria-label="Voz em Curso: voltar ao site"><img class="brand-mark" src="/favicon.svg" alt="" width="32" height="32"><span class="brand-name">voz <em>em curso</em></span></a>
+    <div class="login-pitch">
+      <h1>Cada nota que o aluno canta, comparada com o piano.</h1>
+      <p>O professor envia o exercício gravado. O aluno pratica com o afinador e vê, em tempo real, onde acertou e onde desafinou.</p>
+      <ul class="login-points">
+        <li><svg><use href="#i-check"/></svg>Use os áudios que você já grava no piano</li>
+        <li><svg><use href="#i-check"/></svg>Placar de notas certas e desvio em cents</li>
+        <li><svg><use href="#i-check"/></svg>Histórico de prática de cada exercício</li>
+      </ul>
+    </div>
+    <figure class="login-demo" aria-label="Exemplo do gráfico: notas do piano em barras e a voz do aluno em linha">
+      <svg viewBox="0 0 420 180" role="img">
+        <g class="demo-grid"><line x1="0" y1="30" x2="420" y2="30"/><line x1="0" y1="60" x2="420" y2="60"/><line x1="0" y1="90" x2="420" y2="90"/><line x1="0" y1="120" x2="420" y2="120"/><line x1="0" y1="150" x2="420" y2="150"/></g>
+        <g class="demo-bars">
+          <rect x="14" y="140" width="40" height="18" rx="4"/><rect x="58" y="125" width="30" height="18" rx="4"/><rect x="92" y="140" width="40" height="18" rx="4"/><rect x="136" y="125" width="30" height="18" rx="4"/>
+          <rect x="170" y="110" width="40" height="18" rx="4"/><rect x="214" y="95" width="30" height="18" rx="4"/><rect x="248" y="80" width="96" height="18" rx="4"/><rect x="348" y="95" width="30" height="18" rx="4"/>
+        </g>
+        <path class="demo-voice ok" d="M18 150 C30 149 42 150 52 149 L62 135 C70 134 80 134 86 135 L96 150 C108 151 120 149 130 150 L140 135 C150 133 158 135 164 134"/>
+        <path class="demo-voice warn" d="M174 121 C186 117 198 118 208 119"/>
+        <path class="demo-voice ok" d="M218 104 C228 104 236 105 242 104 L252 90 C270 88 290 92 306 89 C320 87 332 91 342 89"/>
+        <circle class="demo-dot" cx="342" cy="89" r="5"/>
+        <line class="demo-cursor" x1="342" y1="10" x2="342" y2="172"/>
+      </svg>
+    </figure>
+  </div>
+
+  <div class="login-panel">
+    <div class="auth">
+      <form id="loginForm" class="login-form" novalidate>
+        <div>
+          <h2>Entrar</h2>
+          <p class="muted">Use o e-mail e a senha da sua conta.</p>
+        </div>
+        <div class="field"><label for="loginEmail">E-mail</label><input id="loginEmail" name="email" type="email" autocomplete="username" placeholder="voce@exemplo.com" required></div>
+        <div class="field"><label for="loginPassword">Senha</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required></div>
+        <p class="form-status" id="loginStatus" role="alert"></p>
+        <button class="btn primary lg" type="submit">Entrar</button>
+        <p class="auth-switch">Ainda não tem conta? <a href="#criar-conta">Criar conta</a></p>
+      </form>
+
+      <form id="signupForm" class="login-form" novalidate hidden>
+        <div>
+          <h2>Criar conta</h2>
+          <p class="muted">Leva menos de um minuto.</p>
+        </div>
+        <fieldset class="segmented">
+          <legend class="sr-only">Tipo de conta</legend>
+          <label><input type="radio" name="role" value="professor" checked><span><b>Sou professor</b><small>Minha turma e meus exercícios</small></span></label>
+          <label><input type="radio" name="role" value="aluno"><span><b>Sou aluno</b><small>Com ou sem professor</small></span></label>
+        </fieldset>
+        <div class="field"><label for="signupName">Nome</label><input id="signupName" name="name" autocomplete="name" maxlength="80" placeholder="Seu nome" required></div>
+        <div class="field"><label for="signupEmail">E-mail</label><input id="signupEmail" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required></div>
+        <div class="field"><label for="signupPassword">Senha</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="Pelo menos 8 caracteres" required></div>
+        <div class="field" id="signupCodeField" hidden>
+          <label for="signupCode">Código da turma <span class="opt">opcional</span></label>
+          <input id="signupCode" name="code" autocomplete="off" maxlength="9" placeholder="Ex.: K7M2QX" class="code-input">
+          <small class="hint">Recebeu do seu professor? Digite aqui. Sem código, você estuda por conta própria e monta seus exercícios.</small>
+        </div>
+        <p class="form-status" id="signupStatus" role="alert"></p>
+        <button class="btn primary lg" type="submit">Criar conta</button>
+        <p class="auth-switch">Já tem conta? <a href="#entrar">Entrar</a></p>
+      </form>
+
+      <p class="notice">Versão de demonstração: as contas ficam guardadas só neste navegador.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Aplicativo -->
+<div class="shell" id="appShell" hidden>
+  <aside class="sidebar">
+    <div class="brand"><img class="brand-mark" src="/favicon.svg" alt="" width="32" height="32"><span class="brand-name">voz <em>em curso</em></span></div>
+    <nav class="nav" aria-label="Seções">
+      <button type="button" data-go="painel" data-papel="professor"><svg><use href="#i-painel"/></svg><span>Painel</span></button>
+      <button type="button" data-go="agenda" data-papel="professor"><svg><use href="#i-agenda"/></svg><span>Agenda</span></button>
+      <button type="button" data-go="perfil" data-papel="aluno"><svg><use href="#i-perfil"/></svg><span>Meu perfil</span></button>
+      <button type="button" data-go="biblioteca"><svg><use href="#i-biblioteca"/></svg><span data-label-aluno="Exercícios">Biblioteca</span></button>
+      <button type="button" data-go="afinador"><svg><use href="#i-afinador"/></svg><span>Afinador</span></button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="user-chip"><span class="avatar" id="userAvatar">?</span><span class="user-text"><b id="userEmail">—</b><small id="userRole">—</small></span></div>
+      <button type="button" class="icon-btn" data-logout aria-label="Sair" title="Sair"><svg><use href="#i-sair"/></svg></button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- Painel do professor -->
+    <section class="view" id="view-painel" hidden>
+      <header class="page-head">
+        <div><p class="eyebrow">Painel do professor</p><h1>Visão geral</h1><p class="lead">Acompanhe sua turma e os exercícios da biblioteca.</p></div>
+        <div class="page-actions"><button class="btn secondary" type="button" data-go="biblioteca"><svg><use href="#i-mais"/></svg>Novo exercício</button></div>
+      </header>
+      <div class="kpis">
+        <article class="kpi"><span class="kpi-label">Alunos</span><b id="studentCount">0</b><small>ativos na turma</small></article>
+        <article class="kpi"><span class="kpi-label">Exercícios</span><b id="exerciseCount">0</b><small>na biblioteca</small></article>
+        <article class="kpi"><span class="kpi-label">Práticas</span><b id="practiceCount">0</b><small>da turma, neste navegador</small></article>
+      </div>
+      <div class="two-col">
+        <div class="stack">
+        <section class="panel">
+          <div class="panel-head"><div><h2>Alunos</h2><p>Convide pelo e-mail ou passe o código da turma.</p></div></div>
+          <div class="class-code">
+            <div><span class="kpi-label">Código da turma</span><b id="classCode">——————</b></div>
+            <button class="btn secondary sm" type="button" id="copyInvite">Copiar link de convite</button>
+          </div>
+          <form id="studentForm" class="inline-form four-cols">
+            <div class="field"><label for="newStudentName">Nome</label><input id="newStudentName" name="name" required maxlength="80" placeholder="Nome completo"></div>
+            <div class="field"><label for="newStudentEmail">E-mail</label><input id="newStudentEmail" name="email" type="email" required placeholder="aluno@exemplo.com"></div>
+            <div class="field"><label for="newStudentPhone">WhatsApp <span class="opt">opcional</span></label><input id="newStudentPhone" name="phone" type="tel" autocomplete="off" maxlength="30" placeholder="(11) 90000-0000"></div>
+            <button class="btn primary" type="submit"><svg><use href="#i-mais"/></svg>Convidar</button>
+          </form>
+          <p class="form-status" id="teacherNotice" role="status"></p>
+          <div class="table" id="studentList" aria-live="polite"></div>
+        </section>
+        <section class="panel" id="studentDetail" hidden aria-labelledby="detailName"></section>
+        </div>
+        <div class="stack">
+        <section class="panel">
+          <div class="panel-head"><div><h2>Aulas de hoje</h2><p id="todayLead">Seus horários fixos deste dia.</p></div><button class="btn ghost sm" type="button" data-go="agenda">Ver agenda</button></div>
+          <div class="today-list" id="todayList"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h2>Atalhos</h2><p>O que fazer a seguir.</p></div></div>
+          <div class="shortcuts">
+            <button type="button" class="shortcut" data-go="biblioteca"><span class="shortcut-icon"><svg><use href="#i-biblioteca"/></svg></span><span><b>Biblioteca de exercícios</b><small>Envie os áudios que você grava no piano</small></span><svg class="chev"><use href="#i-seta"/></svg></button>
+            <button type="button" class="shortcut" data-go="afinador"><span class="shortcut-icon"><svg><use href="#i-afinador"/></svg></span><span><b>Afinador</b><small>Teste um exercício como o aluno vê</small></span><svg class="chev"><use href="#i-seta"/></svg></button>
+            <button type="button" class="shortcut" data-go="agenda"><span class="shortcut-icon"><svg><use href="#i-agenda"/></svg></span><span><b>Agenda</b><small>Horários fixos das aulas de cada aluno</small></span><svg class="chev"><use href="#i-seta"/></svg></button>
+          </div>
+        </section>
+        </div>
+      </div>
+      <section class="panel device-card" id="deviceCard" aria-labelledby="deviceTitle">
+        <div class="panel-head">
+          <div class="device-title">
+            <span class="shortcut-icon"><svg><use href="#i-aparelho"/></svg></span>
+            <div><h2 id="deviceTitle">Treinos com aparelhos</h2><p>Respirom, Lax Vox, Shaker, canudo… O aluno faz o exercício com o aparelho e acompanha a afinação no gráfico.</p></div>
+          </div>
+          <div class="page-actions">
+            <button class="btn secondary sm" type="button" id="deviceSeeAll">Ver todos</button>
+            <button class="btn primary sm" type="button" id="deviceNew"><svg><use href="#i-mais"/></svg>Novo treino</button>
+          </div>
+        </div>
+        <div class="device-body" id="deviceBody" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <!-- Agenda do professor -->
+    <section class="view" id="view-agenda" hidden>
+      <header class="page-head">
+        <div><p class="eyebrow">Painel do professor</p><h1>Agenda</h1><p class="lead">Os horários fixos de cada aluno. Toque numa aula para editar.</p></div>
+        <div class="page-actions"><button class="btn primary" type="button" id="newClassBtn"><svg><use href="#i-mais"/></svg>Nova aula</button></div>
+      </header>
+      <section class="panel" id="classPanel" hidden>
+        <div class="panel-head"><div><h2 id="classFormTitle">Nova aula</h2><p>Aula semanal: o mesmo dia e horário toda semana.</p></div><button type="button" class="icon-btn" id="closeClassForm" aria-label="Fechar"><svg><use href="#i-fechar"/></svg></button></div>
+        <form id="classForm" class="form-grid three" novalidate>
+          <div class="field"><label for="classStudent">Aluno</label><select id="classStudent" name="student" required></select></div>
+          <div class="field"><label for="classDay">Dia da semana</label><select id="classDay" name="day" required></select></div>
+          <div class="field"><label for="classStart">Início</label><input id="classStart" name="start" type="time" step="300" required></div>
+          <div class="field"><label for="classDuration">Duração</label><select id="classDuration" name="duration"><option value="30">30 min</option><option value="45">45 min</option><option value="50">50 min</option><option value="60" selected>1h</option><option value="90">1h30</option><option value="120">2h</option></select></div>
+          <div class="field"><label for="classMode">Modalidade</label><select id="classMode" name="mode"><option value="presencial">Presencial</option><option value="online">Online</option></select></div>
+          <div class="field"><label for="classPlace">Local ou link <span class="opt">opcional</span></label><input id="classPlace" name="place" maxlength="200" placeholder="Ex.: Sala 2 ou link da chamada"></div>
+          <div class="form-actions span-all"><p class="form-status" id="classStatus" role="alert"></p><button type="button" class="btn ghost danger" id="deleteClassBtn" hidden>Excluir aula</button><button class="btn primary" type="submit">Salvar aula</button></div>
+        </form>
+      </section>
+      <div class="week-summary" id="weekSummary"></div>
+      <div class="week" id="weekGrid"></div>
+    </section>
+
+    <!-- Perfil do aluno -->
+    <section class="view" id="view-perfil" hidden>
+      <header class="page-head">
+        <div><p class="eyebrow">Área do aluno</p><h1>Meu perfil</h1><p class="lead">Seus dados e objetivos ajudam o professor a planejar as aulas.</p></div>
+      </header>
+      <div class="two-col">
+        <section class="panel">
+          <div class="panel-head"><div><h2>Dados</h2><p>Seu professor vê o nome, a voz e o objetivo.</p></div></div>
+          <form id="profileForm" class="form-grid">
+            <div class="field"><label for="profileName">Nome</label><input id="profileName" name="name" maxlength="80" placeholder="Seu nome"></div>
+            <div class="field"><label for="profileEmail">E-mail</label><input id="profileEmail" name="email" type="email" readonly></div>
+            <div class="field"><label for="profileVoice">Classificação vocal</label><select id="profileVoice" name="voice"><option value="">Ainda não sei</option><option>Soprano</option><option>Mezzo-soprano</option><option>Contralto</option><option>Tenor</option><option>Barítono</option><option>Baixo</option></select></div>
+            <div class="field span-2"><label for="profileGoal">Objetivo nas aulas</label><textarea id="profileGoal" name="goal" rows="3" maxlength="300" placeholder="Ex.: ganhar segurança nas notas agudas"></textarea></div>
+            <div class="form-actions span-2"><p class="form-status" id="profileNotice" role="status"></p><button class="btn primary" type="submit">Salvar perfil</button></div>
+          </form>
+        </section>
+        <div class="stack">
+        <section class="panel">
+          <div class="panel-head"><div><h2>Seu professor</h2><p id="teacherLead">—</p></div></div>
+          <div id="teacherInfo"></div>
+          <form id="joinForm" class="join-form">
+            <div class="field"><label for="joinCode">Código da turma</label><input id="joinCode" name="code" class="code-input" autocomplete="off" maxlength="9" placeholder="Ex.: K7M2QX" required></div>
+            <button class="btn secondary" type="submit">Entrar na turma</button>
+          </form>
+          <p class="form-status" id="joinNotice" role="status"></p>
+        </section>
+        <section class="panel" id="myClassesPanel" hidden>
+          <div class="panel-head"><div><h2>Suas aulas</h2><p>Horários marcados pelo seu professor.</p></div></div>
+          <div class="today-list" id="myClasses"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h2>Praticar</h2><p id="practiceLead">Os exercícios do seu professor.</p></div></div>
+          <div class="shortcuts">
+            <button type="button" class="shortcut" data-go="biblioteca"><span class="shortcut-icon"><svg><use href="#i-biblioteca"/></svg></span><span><b>Exercícios</b><small>Escolha um e pratique com o afinador</small></span><svg class="chev"><use href="#i-seta"/></svg></button>
+            <button type="button" class="shortcut" data-go="afinador"><span class="shortcut-icon"><svg><use href="#i-afinador"/></svg></span><span><b>Afinador livre</b><small>Cante e veja a nota e o volume</small></span><svg class="chev"><use href="#i-seta"/></svg></button>
+          </div>
+        </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biblioteca -->
+    <section class="view" id="view-biblioteca" hidden>
+      <header class="page-head">
+        <div><p class="eyebrow" id="libEyebrow">Biblioteca</p><h1>Exercícios vocais</h1><p class="lead" id="libLead">Áudios de piano organizados por categoria. Toque em “Praticar” para cantar com o gráfico.</p></div>
+        <div class="page-actions"><button class="btn primary" type="button" id="newExerciseBtn"><svg><use href="#i-mais"/></svg>Novo exercício</button></div>
+      </header>
+
+      <section class="panel" id="exercisePanel" hidden>
+        <div class="panel-head"><div><h2>Novo exercício</h2><p>Funciona melhor com piano tocando uma nota por vez.</p></div><button type="button" class="icon-btn" id="closeExerciseForm" aria-label="Fechar"><svg><use href="#i-fechar"/></svg></button></div>
+        <form class="form-grid four" id="exerciseForm">
+          <div class="field"><label for="exerciseName">Nome</label><input id="exerciseName" name="name" required maxlength="90" placeholder="Ex.: vibração de lábios em escala"></div>
+          <div class="field"><label for="exerciseCategory">Categoria</label><select id="exerciseCategory" name="category" required></select></div>
+          <div class="field"><label for="exerciseEquipment">Aparelho <span class="opt">opcional</span></label><input id="exerciseEquipment" name="equipment" maxlength="60" placeholder="Ex.: Respirom, Lax Vox" list="deviceOptions"><datalist id="deviceOptions"><option value="Respirom"><option value="Lax Vox"><option value="Shaker"><option value="Canudo"><option value="Garrafa com água"><option value="Tubo de ressonância"></datalist></div>
+          <div class="field"><label for="exerciseFile">Áudio</label><input id="exerciseFile" name="audio" type="file" accept="audio/*" required></div>
+          <div class="form-actions span-all"><button class="btn primary" type="submit">Adicionar à biblioteca</button></div>
+        </form>
+      </section>
+
+      <div class="toolbar-row">
+        <div class="chips" id="categoryFilter" role="group" aria-label="Filtrar por categoria"></div>
+      </div>
+      <p class="form-status" id="libraryNote" role="status"></p>
+      <div class="exercise-grid" id="exerciseCategories" aria-live="polite"></div>
+    </section>
+
+    <!-- Afinador -->
+    <section class="view" id="view-afinador" hidden>
+      <header class="page-head">
+        <div><p class="eyebrow">Prática</p><h1>Afinador</h1><p class="lead">Afinação, linha melódica e volume da sua voz em tempo real.</p></div>
+        <div class="page-actions"><button class="btn primary" type="button" id="startBtn"><span class="dot"></span><svg><use href="#i-mic"/></svg><span id="startLbl">Ligar microfone</span></button></div>
+      </header>
+      <div class="alert" id="err" role="alert" hidden></div>
+
+      <div class="tuner-grid">
+        <section class="panel tuner idle" id="tuner">
+          <div class="panel-head compact"><h2>Nota</h2><span class="chip" id="tuneChip">Cante uma nota</span></div>
+          <div class="note-box">
+            <div class="note" id="note">—</div>
+            <div class="note-meta">
+              <span class="big" id="hz">— Hz</span>
+              <span id="letter">—</span>
+              <span id="centsTxt">± 0 cents</span>
+            </div>
+          </div>
+          <div class="cents" aria-hidden="true">
+            <div class="track"><div class="zone w" style="left:25%;width:50%"></div><div class="zone" style="left:40%;width:20%"></div></div>
+            <div class="needle" id="needle"></div>
+            <div class="ticks"><span>−50</span><span>−25</span><span>0</span><span>+25</span><span>+50</span></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head compact"><h2>Volume</h2><span class="chip" id="volChip">Silêncio</span></div>
+          <div class="db"><span id="dbVal">−∞</span><small>dB</small></div>
+          <div class="vbar">
+            <div class="fill" id="vfill"></div>
+            <div class="mark" style="left:33.3%"></div><div class="mark" style="left:75%"></div><div class="mark" style="left:91.7%"></div>
+            <div class="peak" id="vpeak"></div>
+          </div>
+          <div class="vscale"><span style="left:0">−60</span><span style="left:33.3%">−40</span><span style="left:75%">−15</span><span style="left:100%">0</span></div>
+          <canvas id="volCanvas"></canvas>
+          <div class="stats">
+            <div class="stat"><span>Pico</span><b id="sPeak">—</b></div>
+            <div class="stat"><span>Média cantando</span><b id="sAvg">—</b></div>
+            <div class="stat"><span>Máximo</span><b id="sMax">—</b></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel graph-panel" id="graphCard">
+        <div class="panel-head">
+          <div><h2 id="graphTitle">Linha melódica · últimos 10 segundos</h2><p id="graphHint">Verde: afinado (±10 cents) · amarelo: ±25 · vermelho: fora</p></div>
+        </div>
+        <div class="ex-bar">
+          <label class="btn secondary" for="exFile" id="exFileBtn"><svg><use href="#i-upload"/></svg><span id="exFileLbl">Carregar exercício</span></label>
+          <input type="file" id="exFile" accept="audio/*,.mp3,.m4a,.wav,.ogg" hidden>
+          <span class="muted small" id="exStatus">Ou escolha um na biblioteca. Também dá para arrastar o arquivo para cá.</span>
+          <div class="ex-ctl" id="exCtl" hidden>
+            <button class="btn primary" type="button" id="exPlay">▶ Tocar e cantar</button>
+            <button class="btn secondary" type="button" id="exRestart" title="Voltar ao início">⟲ Início</button>
+            <input type="range" id="exSeek" min="0" max="1000" value="0" aria-label="Posição no exercício">
+            <span class="ex-time" id="exTime">0:00 / 0:00</span>
+            <button class="btn ghost" type="button" id="exClose">Fechar</button>
+          </div>
+        </div>
+        <canvas id="pitchCanvas"></canvas>
+        <div class="ex-foot" id="exFoot" hidden>
+          <div class="legend"><span class="sw piano"></span>Piano <span class="sw voz"></span>Sua voz <span class="muted">Verde: até 25 cents da nota do piano · amarelo: até 50 · vermelho: nota errada</span></div>
+          <div class="ex-grid">
+            <div class="stat"><span>Notas certas</span><b id="exScore">—</b></div>
+            <div class="stat"><span>Desvio médio</span><b id="exDev">—</b></div>
+            <div class="field"><label for="exOct">Comparar com o piano</label>
+              <select id="exOct"><option value="-12">Uma oitava abaixo</option><option value="0" selected>Na oitava gravada</option><option value="12">Uma oitava acima (vozes agudas)</option></select>
+            </div>
+            <div class="field"><label for="exLag">Compensar atraso do fone: <span id="exLagVal">0</span> ms</label><input type="range" id="exLag" min="0" max="400" step="10" value="0"></div>
+          </div>
+          <p class="ex-saved" id="exSaved" role="status" hidden></p>
+          <p class="muted small">Use fones de ouvido: sem eles o microfone capta o piano. A prática é salva quando o exercício termina ou quando você o fecha.</p>
+        </div>
+      </section>
+
+      <div class="tools-grid">
+        <section class="panel">
+          <div class="panel-head compact"><h2>Nota de referência</h2></div>
+          <p class="muted small">Toque uma nota e tente cantá-la. Ela aparece tracejada no gráfico.</p>
+          <div class="inline"><select id="refSel" aria-label="Nota de referência"></select><button class="btn secondary" type="button" id="playBtn">▶ Tocar</button></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head compact"><h2>Extensão nesta sessão</h2><button class="btn ghost sm" type="button" id="resetBtn">Zerar</button></div>
+          <div class="range-out" id="rangeOut">—</div>
+          <p class="muted small" id="rangeHint">Cante da nota mais grave à mais aguda que conseguir com conforto. Só contam notas sustentadas.</p>
+        </section>
+        <section class="panel">
+          <div class="panel-head compact"><h2>Ajustes</h2></div>
+          <div class="field"><label for="micSel">Microfone</label><select id="micSel"><option value="">Padrão do sistema</option></select></div>
+          <div class="field"><label for="gate">Sensibilidade: ignora sons abaixo de <span id="gateVal">−50</span> dB</label><input type="range" id="gate" min="-70" max="-25" step="1" value="-50"></div>
+          <div class="field"><label for="a4">Lá de referência (A4)</label><div class="input-unit"><input type="number" id="a4" min="415" max="466" step="1" value="440"><span>Hz</span></div></div>
+        </section>
+      </div>
+
+      <p class="footnote">Notas no padrão científico: C4 = Dó4 = Dó central. O volume é medido em dB relativos ao máximo do microfone (0 dB = saturação), não em decibéis do ambiente.</p>
+    </section>
+  </main>
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
