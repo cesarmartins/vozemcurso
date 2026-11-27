@@ -191,10 +191,13 @@ function concluirTentativa() {
   const a = ex.avaliar(deslocamento);
   if (a.avaliadas < MIN_NOTAS_PARA_SALVAR || a.desvioMedio == null) return;
   vozJaSalva = ex.voz.length;
-  const ok = salvarResultado(contaId, ex.idBiblioteca, { data: Date.now(), acertos: a.acertos, avaliadas: a.avaliadas, desvioMedio: a.desvioMedio });
-  salvo.textContent = ok ? `Prática salva: ${a.acertos} de ${a.avaliadas} notas certas.` : 'Não consegui salvar a prática neste navegador.';
+  const texto = `${a.acertos} de ${a.avaliadas} notas certas`;
+  salvo.textContent = `Salvando a prática: ${texto}…`;
   salvo.hidden = false;
-  biblioteca.atualizar();
+  void salvarResultado(contaId, ex.idBiblioteca, { data: Date.now(), acertos: a.acertos, avaliadas: a.avaliadas, desvioMedio: a.desvioMedio }).then((ok) => {
+    salvo.textContent = ok ? `Prática salva: ${texto}.` : 'Não consegui salvar a prática. Verifique a internet.';
+    biblioteca.atualizar();
+  });
 }
 
 async function carregar(audioArquivo: Blob, nome: string, idBiblioteca: string | null = null) {

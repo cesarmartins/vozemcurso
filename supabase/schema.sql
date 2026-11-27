@@ -1,6 +1,6 @@
--- Banco de produção do Afinador Vocal (Supabase / PostgreSQL).
--- Rode no SQL Editor do Supabase. Espelha o que hoje fica no navegador (src/contas/local.ts,
--- src/exercicios/biblioteca.ts e src/exercicios/resultados.ts).
+-- Banco do Voz em Curso (Supabase / PostgreSQL).
+-- Como usar: no Supabase, abra SQL Editor → New query, cole este arquivo inteiro e clique em Run.
+-- Roda uma vez, num projeto novo. Se der erro, nada é gravado (tudo roda numa transação só).
 --
 -- Regra principal (multi-professor):
 --   * cada professor vê e edita só a própria turma e a própria biblioteca;
@@ -59,7 +59,8 @@ create index on public.exercicios (dono_id);
 create table public.resultados (
   id            bigint generated always as identity primary key,
   aluno_id      uuid not null references public.contas (id) on delete cascade,
-  exercicio_id  uuid not null references public.exercicios (id) on delete cascade,
+  -- uuid de um exercício da biblioteca, ou 'padrao:<id>' para os exercícios padrão Voz em Curso.
+  exercicio_id  text not null,
   acertos       int not null check (acertos >= 0),
   avaliadas     int not null check (avaliadas > 0 and acertos <= avaliadas),
   desvio_medio  real not null,
@@ -95,11 +96,11 @@ create index on public.aulas (professor_id, dia);
 create index on public.aulas (aluno_email);
 
 -- O professor não pode ter duas aulas no mesmo horário.
-create extension if not exists btree_gist;
+create extension if not exists btree_gist with schema extensions;
 alter table public.aulas add constraint aulas_sem_conflito exclude using gist (
   professor_id with =,
   dia with =,
-  tsrange(timestamp '2000-01-01' + inicio, timestamp '2000-01-01' + inicio + make_interval(mins => duracao)) with &&
+  tsrange(date '2000-01-01' + inicio, date '2000-01-01' + inicio + make_interval(mins => duracao::int)) with &&
 );
 
 -- ---------- Rotina de treino ----------
@@ -132,7 +133,8 @@ create function public.entrar_na_turma(codigo text) returns void language plpgsq
 declare prof uuid;
 begin
   select id into prof from contas where tipo = 'professor' and codigo_turma = upper(regexp_replace(codigo, '[^A-Za-z0-9]', '', 'g'));
-  if prof is null then raise exception 'Código da turma não encontrado'; end if;
+  if prof is null then raise exception 'Código da turma não encontrado. Confira com seu professor.'; end if;
+  if prof = public.meu_professor() then raise exception 'Você já está nessa turma.'; end if;
   update contas set professor_id = prof where id = auth.uid() and tipo = 'aluno';
   delete from convites where email = (select email from contas where id = auth.uid());
 end $$;
@@ -167,6 +169,115 @@ begin
 end $$;
 create trigger contas_esquecer_aluno after update of professor_id on public.contas
   for each row execute function public.esquecer_aluno();
+
+-- Exercício apagado: o histórico de práticas dele vai junto.
+create function public.apagar_resultados_do_exercicio() returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  delete from resultados where exercicio_id = old.id::text;
+  return old;
+end $$;
+create trigger exercicios_apagar_resultados after delete on public.exercicios
+  for each row execute function public.apagar_resultados_do_exercicio();
+
+-- ---------- Cadastro ----------
+-- Código da turma: 6 letras e números, sem os que se confundem (0/O, 1/I/L).
+create function public.gerar_codigo_turma() returns text language plpgsql volatile set search_path = public as $$
+declare
+  alfabeto constant text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  codigo text;
+begin
+  loop
+    codigo := '';
+    for i in 1..6 loop
+      codigo := codigo || substr(alfabeto, 1 + floor(random() * length(alfabeto))::int, 1);
+    end loop;
+    exit when not exists (select 1 from contas where codigo_turma = codigo);
+  end loop;
+  return codigo;
+end $$;
+
+-- Professor dono de um código de turma (o site confere o código antes de criar a conta).
+create function public.turma_por_codigo(codigo text) returns table (professor_nome text) language sql stable security definer set search_path = public as $$
+  select nome from contas
+   where tipo = 'professor' and codigo_turma = upper(regexp_replace(codigo, '[^A-Za-z0-9]', '', 'g'))
+$$;
+
+-- Quando alguém cria a conta (auth.users), cria o perfil em contas com os dados do formulário.
+-- Aluno: entra na turma pelo código digitado ou, sem código, pelo convite feito para o e-mail dele.
+create function public.criar_conta() returns trigger language plpgsql security definer set search_path = public as $$
+declare
+  dados jsonb := coalesce(new.raw_user_meta_data, '{}'::jsonb);
+  tipo_conta text := case when dados->>'tipo' = 'professor' then 'professor' else 'aluno' end;
+  prof uuid;
+begin
+  if tipo_conta = 'aluno' then
+    if coalesce(dados->>'codigo_turma', '') <> '' then
+      select id into prof from contas
+       where tipo = 'professor' and codigo_turma = upper(regexp_replace(dados->>'codigo_turma', '[^A-Za-z0-9]', '', 'g'));
+    end if;
+    if prof is null then
+      select professor_id into prof from convites where email = lower(new.email) order by criado_em desc limit 1;
+    end if;
+  end if;
+  insert into contas (id, tipo, nome, email, professor_id, codigo_turma)
+  values (
+    new.id,
+    tipo_conta,
+    coalesce(nullif(trim(dados->>'nome'), ''), split_part(new.email, '@', 1)),
+    lower(new.email),
+    prof,
+    case when tipo_conta = 'professor' then gerar_codigo_turma() end
+  );
+  if prof is not null then delete from convites where email = lower(new.email); end if;
+  return new;
+end $$;
+create trigger auth_criar_conta after insert on auth.users
+  for each row execute function public.criar_conta();
+
+-- ---------- Convites (o professor não enxerga outras contas; o banco confere por ele) ----------
+create function public.convidar_aluno(nome text, email text, telefone text default '') returns uuid language plpgsql security definer set search_path = public as $$
+declare
+  e text := lower(trim(email));
+  existente contas;
+  novo uuid;
+begin
+  if not exists (select 1 from contas where id = auth.uid() and tipo = 'professor') then raise exception 'Só professores podem convidar alunos.'; end if;
+  if length(trim(nome)) = 0 then raise exception 'Informe o nome do aluno.'; end if;
+  if e !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$' then raise exception 'Informe um e-mail válido.'; end if;
+  select * into existente from contas where contas.email = e;
+  if existente.tipo = 'professor' then raise exception 'Esse e-mail é de uma conta de professor.'; end if;
+  if existente.professor_id = auth.uid() then raise exception 'Esse aluno já está na sua turma.'; end if;
+  if exists (select 1 from convites c where c.professor_id = auth.uid() and c.email = e) then
+    raise exception 'Esse e-mail já foi convidado e está aguardando.';
+  end if;
+  insert into convites (professor_id, nome, email) values (auth.uid(), trim(nome), e) returning id into novo;
+  if length(trim(coalesce(telefone, ''))) > 0 then
+    insert into fichas (professor_id, aluno_email, telefone) values (auth.uid(), e, trim(telefone))
+    on conflict (professor_id, aluno_email) do update set telefone = excluded.telefone;
+  end if;
+  return novo;
+end $$;
+
+-- Cancelar convite: some também a ficha e os horários, se a pessoa ainda não estiver na turma.
+create function public.cancelar_convite(convite uuid) returns void language plpgsql security definer set search_path = public as $$
+declare e text;
+begin
+  delete from convites where id = convite and professor_id = auth.uid() returning email into e;
+  if e is not null and not exists (select 1 from contas where email = e and professor_id = auth.uid()) then
+    delete from fichas where professor_id = auth.uid() and aluno_email = e;
+    delete from aulas  where professor_id = auth.uid() and aluno_email = e;
+  end if;
+end $$;
+
+-- Convites recebidos pelo aluno logado, com o nome do professor.
+create function public.meus_convites() returns table (id uuid, professor_id uuid, nome text, email text, criado_em timestamptz, professor_nome text)
+language sql stable security definer set search_path = public as $$
+  select c.id, c.professor_id, c.nome, c.email, c.criado_em, p.nome
+    from convites c
+    join contas eu on eu.id = auth.uid() and eu.email = c.email
+    join contas p on p.id = c.professor_id
+   where c.professor_id is distinct from eu.professor_id
+$$;
 
 -- ---------- Segurança por linha ----------
 alter table public.fichas     enable row level security;
@@ -215,7 +326,11 @@ create policy concluidos_aluno on public.treinos_concluidos for all using (aluno
 create policy concluidos_professor on public.treinos_concluidos for select using (public.sou_professor_de(aluno_id));
 
 -- ---------- Storage (áudios) ----------
--- Crie o bucket privado "exercicios" no painel do Supabase e depois rode:
+-- Pasta privada dos áudios: só entra quem as políticas abaixo deixam. Limite de 20 MB por arquivo.
+insert into storage.buckets (id, name, public, file_size_limit)
+values ('exercicios', 'exercicios', false, 20971520)
+on conflict (id) do nothing;
+
 create policy audio_dono on storage.objects for all
   using (bucket_id = 'exercicios' and (storage.foldername(name))[1] = auth.uid()::text)
   with check (bucket_id = 'exercicios' and (storage.foldername(name))[1] = auth.uid()::text);

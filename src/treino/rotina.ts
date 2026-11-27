@@ -100,50 +100,7 @@ export function naSemana(concluidos: string[], hoje: string): number {
   return n;
 }
 
-const chave = (contaId: string) => `vozemcurso-treino-${contaId}`;
-
-export function lerProgresso(contaId: string): Progresso {
-  try {
-    const v: unknown = JSON.parse(localStorage.getItem(chave(contaId)) ?? 'null');
-    if (v && typeof v === 'object' && 'dias' in v && 'concluidos' in v) return v as Progresso;
-  } catch {
-    // dados locais inválidos: começa do zero
-  }
-  return { dias: {}, concluidos: [] };
-}
-
-function gravar(contaId: string, p: Progresso) {
-  // Guarda só os últimos 60 dias de detalhe; os dias concluídos ficam todos (para a sequência).
-  const datas = Object.keys(p.dias).sort();
-  for (const d of datas.slice(0, Math.max(0, datas.length - 60))) delete p.dias[d];
-  try {
-    localStorage.setItem(chave(contaId), JSON.stringify(p));
-  } catch {
-    // sem armazenamento: vale até recarregar
-  }
-}
-
-export function marcar(contaId: string, data: string, passoId: string, estado: Estado | null): Progresso {
-  const p = lerProgresso(contaId);
-  const dia = (p.dias[data] ??= {});
-  if (estado) dia[passoId] = estado;
-  else delete dia[passoId];
-  gravar(contaId, p);
-  return p;
-}
-
-/** Marca o treino do dia como concluído (quando todos os passos foram feitos ou pulados). */
-export function concluirDia(contaId: string, data: string): Progresso {
-  const p = lerProgresso(contaId);
-  if (!p.concluidos.includes(data)) p.concluidos.push(data);
-  gravar(contaId, p);
-  return p;
-}
-
-/** Zera os passos marcados hoje para treinar de novo. O dia continua contando como concluído. */
-export function reiniciarDia(contaId: string, data: string): Progresso {
-  const p = lerProgresso(contaId);
-  delete p.dias[data];
-  gravar(contaId, p);
-  return p;
+export function diaMenos(data: string, dias: number): string {
+  const [a, m, d] = data.split('-').map(Number);
+  return dataLocal(new Date(a, m - 1, d - dias));
 }

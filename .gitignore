@@ -17,3 +17,4 @@ dist
 
 # Cloudflare (cache local do wrangler)
 .wrangler
+contas-teste.md

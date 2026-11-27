@@ -1,6 +1,6 @@
 import { CATEGORIAS, EXERCICIOS_INCLUIDOS, type CategoriaId } from '../exercicios/catalogo';
-import { excluirExercicio, listarExercicios, salvarExercicio, type ExercicioPessoal } from '../exercicios/biblioteca';
-import { apagarResultados, resultadosDe } from '../exercicios/resultados';
+import { adicionarExercicio, definirNaRotina, excluirExercicio, listarExercicios, type ExercicioPessoal } from '../exercicios/biblioteca';
+import { carregarResultados, resultadosDe } from '../exercicios/resultados';
 
 interface ExercicioVisivel {
   id: string;
@@ -54,7 +54,6 @@ function aproveitamento(id: string, contas: readonly string[]): number | null {
 }
 
 const porId = new Map(CATEGORIAS.map((categoria) => [categoria.id, categoria] as const));
-const novoId = () => globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 const mmss = (s: number) => (isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '–:––');
 const ICONE_TOCAR = '<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>';
 const ICONE_PAUSAR = '<svg viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg>';
@@ -147,7 +146,6 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
   const podeEditar = () => contexto.papel !== 'aluno-turma';
   let filtro: Filtro = 'todas';
   let exercicios: ExercicioVisivel[] = [];
-  let urlsTemporarias: string[] = [];
   let versao = 0;
 
   const avisar = (texto: string, tipo: 'ok' | 'erro' | '' = '') => {
@@ -184,15 +182,13 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
     const minhaVersao = ++versao;
     let pessoais: ExercicioPessoal[];
     try {
-      pessoais = contexto.donoId ? await listarExercicios(contexto.donoId) : [];
+      [pessoais] = await Promise.all([contexto.donoId ? listarExercicios(contexto.donoId) : Promise.resolve([]), carregarResultados(contexto.contasResultados)]);
     } catch (erro) {
       avisar(erro instanceof Error ? erro.message : 'Não foi possível abrir a biblioteca neste navegador.', 'erro');
       return;
     }
     if (minhaVersao !== versao) return;
     tocandoAgora?.pause();
-    urlsTemporarias.forEach((url) => URL.revokeObjectURL(url));
-    urlsTemporarias = [];
     exercicios = [
       ...EXERCICIOS_INCLUIDOS.map((item) => ({
         id: item.id,
@@ -206,21 +202,17 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
       })),
       ...pessoais
         .sort((a, b) => b.criadoEm - a.criadoEm)
-        .map((item) => {
-          const audioUrl = URL.createObjectURL(item.audio);
-          urlsTemporarias.push(audioUrl);
-          return {
-            id: item.id,
-            nome: item.nome,
-            categoria: item.categoria,
-            equipamento: item.equipamento,
-            audioUrl,
-            arquivoNome: item.arquivoNome,
-            pessoal: true,
-            obterAudio: () => Promise.resolve(item.audio),
-            original: item,
-          };
-        }),
+        .map((item) => ({
+          id: item.id,
+          nome: item.nome,
+          categoria: item.categoria,
+          equipamento: item.equipamento,
+          audioUrl: item.audioUrl,
+          arquivoNome: item.arquivoNome,
+          pessoal: true,
+          obterAudio: item.obterAudio,
+          original: item,
+        })),
     ];
     desenhar();
   }
@@ -355,8 +347,7 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
       remover.addEventListener('click', async () => {
         if (!window.confirm(`Remover “${item.nome}” da biblioteca? O áudio e o histórico de práticas serão apagados.`)) return;
         try {
-          await excluirExercicio(item.id);
-          apagarResultados(item.id);
+          if (item.original) await excluirExercicio(item.original);
           await carregar();
           avisar(`“${item.nome}” foi removido.`);
         } catch {
@@ -408,7 +399,7 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
       rotina.title = naRotina ? 'Toque para tirar da rotina' : 'Entra no bloco "Exercícios do professor" do Treino';
       rotina.addEventListener('click', async () => {
         try {
-          await salvarExercicio({ ...original, naRotina: !naRotina });
+          await definirNaRotina(original.id, !naRotina);
           avisar(naRotina ? `“${item.nome}” saiu da rotina de treino.` : `“${item.nome}” entrou na rotina de treino.`, 'ok');
           await carregar();
           opcoes.aoMudarRotina?.();
@@ -437,7 +428,8 @@ export function iniciarBiblioteca(opcoes: OpcoesBiblioteca): ControleBiblioteca 
     const botao = formulario.querySelector<HTMLButtonElement>('button[type="submit"]');
     if (botao) botao.disabled = true;
     try {
-      await salvarExercicio({ id: novoId(), donoId: contexto.donoId, nome, categoria, equipamento, arquivoNome: arquivo.name, audio: arquivo, criadoEm: Date.now() });
+      avisar('Enviando o áudio…');
+      await adicionarExercicio({ donoId: contexto.donoId, nome, categoria, equipamento, arquivo });
       formulario.reset();
       abrirForm(false);
       filtro = 'todas';

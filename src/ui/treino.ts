@@ -3,20 +3,8 @@ import type { Conta } from '../contas';
 import { listarExercicios } from '../exercicios/biblioteca';
 import { CATEGORIAS } from '../exercicios/catalogo';
 import { duracaoDe, EXERCICIOS_PADRAO, idPratica, type ExercicioPadrao, type ExercicioVocalise } from '../treino/padroes';
-import {
-  concluirDia,
-  dataLocal,
-  duracaoPasso,
-  lerProgresso,
-  marcar,
-  montarRotina,
-  naSemana,
-  NOMES_BLOCO,
-  reiniciarDia,
-  sequencia,
-  type ExercicioEnviado,
-  type Passo,
-} from '../treino/rotina';
+import { carregarProgresso, concluirDia, lerProgresso, marcar, reiniciarDia } from '../treino/progresso';
+import { dataLocal, duracaoPasso, montarRotina, naSemana, NOMES_BLOCO, sequencia, type ExercicioEnviado, type Passo } from '../treino/rotina';
 import { gerarVocalise, notasDoVocalise, tonicaPara } from '../treino/vocalise';
 import type { ContextoBiblioteca, ExercicioParaPraticar } from './biblioteca';
 
@@ -105,13 +93,14 @@ export function iniciarTreino(opcoes: OpcoesTreino): ControleTreino {
   async function carregarEnviados() {
     const minha = ++versao;
     let lidos: ExercicioEnviado[] = [];
+    await carregarProgresso(contaId());
     if (contexto?.donoId) {
       try {
         const todos = await listarExercicios(contexto.donoId);
         lidos = todos
           .filter((e) => e.naRotina)
           .sort((a, b) => a.criadoEm - b.criadoEm)
-          .map((e) => ({ id: e.id, nome: e.nome, categoria: e.categoria, equipamento: e.equipamento, obterAudio: () => Promise.resolve(e.audio) }));
+          .map((e) => ({ id: e.id, nome: e.nome, categoria: e.categoria, equipamento: e.equipamento, obterAudio: e.obterAudio }));
       } catch {
         // sem biblioteca neste navegador: a rotina padrão continua
       }

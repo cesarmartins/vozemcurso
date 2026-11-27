@@ -1,6 +1,6 @@
-import { ErroConta, servidor, type Conta, type Turma } from '../contas';
+import { ConfirmeEmail, ErroConta, servidor, type Conta, type Turma } from '../contas';
 import { contarExercicios } from '../exercicios/biblioteca';
-import { totalPraticas } from '../exercicios/resultados';
+import { carregarResultados, totalPraticas } from '../exercicios/resultados';
 import { iniciarAgenda, linhaAula, resumoAulas } from './agenda';
 import type { ContextoBiblioteca } from './biblioteca';
 
@@ -186,6 +186,13 @@ export function iniciarPortal(opcoes: OpcoesPortal): ControlePortal {
         });
         abrirApp(nova);
       } catch (erro) {
+        if (erro instanceof ConfirmeEmail) {
+          // Conta criada, falta confirmar o e-mail: volta para "Entrar" já com o e-mail preenchido.
+          mostrarEntrada('entrar');
+          el<HTMLInputElement>('loginEmail').value = String(dados.get('email') ?? '');
+          status(el('loginStatus'), erro.message, 'ok');
+          return;
+        }
         status(el('signupStatus'), mensagem(erro), 'erro');
       }
     });
@@ -232,7 +239,13 @@ export function iniciarPortal(opcoes: OpcoesPortal): ControlePortal {
   async function atualizarTurma() {
     const prof = conta;
     if (prof?.tipo !== 'professor') return;
-    const turma = await servidor.turma(prof.id);
+    let turma: Turma;
+    try {
+      turma = await servidor.turma(prof.id);
+    } catch (erro) {
+      status(avisoTurma, mensagem(erro), 'erro');
+      return;
+    }
     if (conta !== prof) return;
     const { alunos, convites } = turma;
 
@@ -243,7 +256,9 @@ export function iniciarPortal(opcoes: OpcoesPortal): ControlePortal {
     agenda.mostrar(prof, turma);
 
     el('studentCount').textContent = String(alunos.length);
-    el('practiceCount').textContent = String(totalPraticas([prof.id, ...idsTurma]));
+    void carregarResultados([prof.id, ...idsTurma]).then(() => {
+      if (conta === prof) el('practiceCount').textContent = String(totalPraticas([prof.id, ...idsTurma]));
+    });
     contarExercicios(prof.id)
       .then((n) => (el('exerciseCount').textContent = String(n)))
       .catch(() => (el('exerciseCount').textContent = '—'));
@@ -418,7 +433,13 @@ export function iniciarPortal(opcoes: OpcoesPortal): ControlePortal {
     (campos.namedItem('voice') as HTMLSelectElement).value = aluno.voz;
     (campos.namedItem('goal') as HTMLTextAreaElement).value = aluno.objetivo;
 
-    const [prof, convites, aulas] = await Promise.all([servidor.professorDe(aluno), servidor.convitesPara(aluno), servidor.aulasDoAluno(aluno)]);
+    let prof: Conta | null, convites: Awaited<ReturnType<typeof servidor.convitesPara>>, aulas: Awaited<ReturnType<typeof servidor.aulasDoAluno>>;
+    try {
+      [prof, convites, aulas] = await Promise.all([servidor.professorDe(aluno), servidor.convitesPara(aluno), servidor.aulasDoAluno(aluno)]);
+    } catch (erro) {
+      status(avisoEntrarTurma, mensagem(erro), 'erro');
+      return;
+    }
     if (conta !== aluno) return;
     const minhasAulas = el('myClasses');
     minhasAulas.replaceChildren(...aulas.map((a) => linhaAula(a)));
@@ -531,13 +552,16 @@ export function iniciarPortal(opcoes: OpcoesPortal): ControlePortal {
   // Quem já entrou antes continua logado.
   telaLogin.hidden = true;
   app.hidden = true;
-  void servidor.contaAtual().then((salva) => {
-    if (salva) abrirApp(salva);
-    else {
-      telaLogin.hidden = false;
-      lerEndereco();
-    }
-  });
+  void servidor
+    .contaAtual()
+    .catch(() => null)
+    .then((salva) => {
+      if (salva) abrirApp(salva);
+      else {
+        telaLogin.hidden = false;
+        lerEndereco();
+      }
+    });
 
   return { irPara, conta: () => conta };
 }

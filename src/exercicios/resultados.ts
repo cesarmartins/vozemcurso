@@ -1,5 +1,8 @@
-// Histórico de práticas: de cada aluno, em cada exercício. Guardado neste navegador por enquanto;
-// em produção vira a tabela "resultados" do banco, que o professor consulta para a turma toda.
+// Histórico de práticas no Supabase (tabela "resultados").
+// As telas leem de um cache em memória, preenchido por carregarResultados(); salvar grava no
+// banco e atualiza o cache na hora. O banco só deixa ver as próprias práticas e as da turma.
+
+import { supabase } from '../supabase';
 
 export interface ResultadoPratica {
   data: number;
@@ -8,51 +11,55 @@ export interface ResultadoPratica {
   desvioMedio: number;
 }
 
-const CHAVE = 'afinador-vocal-resultados-v2';
-const MAX_POR_EXERCICIO = 30;
-
-/** contaId → exercicioId → práticas */
-type Historico = Record<string, Record<string, ResultadoPratica[]>>;
-
-function ler(): Historico {
-  try {
-    const valor: unknown = JSON.parse(localStorage.getItem(CHAVE) ?? '{}');
-    return valor && typeof valor === 'object' && !Array.isArray(valor) ? (valor as Historico) : {};
-  } catch {
-    return {};
-  }
+interface Linha {
+  aluno_id: string;
+  exercicio_id: string;
+  acertos: number;
+  avaliadas: number;
+  desvio_medio: number;
+  criado_em: string;
 }
 
-function gravar(todos: Historico): boolean {
-  try {
-    localStorage.setItem(CHAVE, JSON.stringify(todos));
-    return true;
-  } catch {
-    return false;
+/** contaId → exercicioId → práticas (da mais antiga para a mais recente) */
+const cache = new Map<string, Map<string, ResultadoPratica[]>>();
+
+/** Busca no banco as práticas destas contas (substitui o que havia no cache para elas). */
+export async function carregarResultados(contas: readonly string[]): Promise<void> {
+  const ids = [...new Set(contas)].filter(Boolean);
+  if (!ids.length) return;
+  const { data, error } = await supabase
+    .from('resultados')
+    .select('aluno_id, exercicio_id, acertos, avaliadas, desvio_medio, criado_em')
+    .in('aluno_id', ids)
+    .order('criado_em');
+  if (error) return; // sem conexão: as telas mostram o que já estava no cache
+  for (const id of ids) cache.set(id, new Map());
+  for (const l of (data ?? []) as Linha[]) {
+    const porEx = cache.get(l.aluno_id)!;
+    const lista = porEx.get(l.exercicio_id) ?? [];
+    lista.push({ data: Date.parse(l.criado_em), acertos: l.acertos, avaliadas: l.avaliadas, desvioMedio: l.desvio_medio });
+    porEx.set(l.exercicio_id, lista);
   }
 }
 
 /** Práticas de um exercício feitas por estas contas, da mais antiga para a mais recente. */
 export function resultadosDe(idExercicio: string, contas: readonly string[]): ResultadoPratica[] {
-  const todos = ler();
-  return contas
-    .flatMap((id) => todos[id]?.[idExercicio] ?? [])
-    .filter((r) => r && typeof r.data === 'number')
-    .sort((a, b) => a.data - b.data);
+  return contas.flatMap((id) => cache.get(id)?.get(idExercicio) ?? []).sort((a, b) => a.data - b.data);
 }
 
-export function salvarResultado(contaId: string, idExercicio: string, r: ResultadoPratica): boolean {
-  const todos = ler();
-  const daConta = (todos[contaId] ??= {});
-  daConta[idExercicio] = [...(daConta[idExercicio] ?? []), r].slice(-MAX_POR_EXERCICIO);
-  return gravar(todos);
-}
-
-/** Apaga o histórico de um exercício removido da biblioteca, de todos os alunos. */
-export function apagarResultados(idExercicio: string) {
-  const todos = ler();
-  for (const daConta of Object.values(todos)) delete daConta[idExercicio];
-  gravar(todos);
+export async function salvarResultado(contaId: string, idExercicio: string, r: ResultadoPratica): Promise<boolean> {
+  const { error } = await supabase.from('resultados').insert({
+    aluno_id: contaId,
+    exercicio_id: idExercicio,
+    acertos: r.acertos,
+    avaliadas: r.avaliadas,
+    desvio_medio: r.desvioMedio,
+  });
+  if (error) return false;
+  const porEx = cache.get(contaId) ?? new Map<string, ResultadoPratica[]>();
+  porEx.set(idExercicio, [...(porEx.get(idExercicio) ?? []), r]);
+  cache.set(contaId, porEx);
+  return true;
 }
 
 /** "34 de 52 notas · 18 cents · 23/11" */
@@ -62,8 +69,9 @@ export function resumir(r: ResultadoPratica): string {
   return `${pct}% (${r.acertos} de ${r.avaliadas} notas) · ${Math.round(r.desvioMedio)} cents · ${data}`;
 }
 
-/** Quantas práticas estas contas registraram, somando todos os exercícios. */
+/** Quantas práticas estas contas registraram (do cache: chame carregarResultados antes). */
 export function totalPraticas(contas: readonly string[]): number {
-  const todos = ler();
-  return contas.reduce((soma, id) => soma + Object.values(todos[id] ?? {}).reduce((s, l) => s + (Array.isArray(l) ? l.length : 0), 0), 0);
+  let n = 0;
+  for (const id of new Set(contas)) for (const lista of cache.get(id)?.values() ?? []) n += lista.length;
+  return n;
 }
